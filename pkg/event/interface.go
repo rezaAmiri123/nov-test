@@ -11,7 +11,7 @@ type MessageProcessor interface {
 }
 
 type Producer interface {
-	PublishMessage(ctx context.Context) error
+	PublishMessage(ctx context.Context, data []byte, channel string) error
 	Close() error
 }
 
