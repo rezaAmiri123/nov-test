@@ -11,6 +11,13 @@ type Nats struct {
 	Logger logger.Logger
 }
 
+func NewNats(sc stan.Conn, logger logger.Logger) *Nats {
+	return &Nats{
+		Sc:     sc,
+		Logger: logger,
+	}
+}
+
 func (n *Nats) PublishMessage(ctx context.Context, data []byte, channel string) error {
 	ach := func(s string, err2 error) {}
 	_, err := n.Sc.PublishAsync(channel, data, ach)
