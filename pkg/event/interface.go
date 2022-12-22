@@ -17,6 +17,4 @@ type Producer interface {
 
 type Subscriber interface {
 	ConsumeTopic(ctx context.Context, cancel context.CancelFunc, groupID, topic string, poolSize int)
-	GetNewKafkaReader(kafkaURL []string, topic, groupID string)
-	GetNewKafkaWriter(topic string)
 }
