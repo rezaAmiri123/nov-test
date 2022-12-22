@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package event;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package="github.com/rezaAmiri123/nov-test/publisher_service/proto/event";
+
+message Sensor{
+  string Name = 1;
+  google.protobuf.Timestamp Timestamp = 2;
+  double Value = 3;
+}
+
+message CreateSensor{
+  repeated Sensor sensors = 1;
+}
