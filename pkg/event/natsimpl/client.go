@@ -7,20 +7,28 @@ import (
 	"github.com/rezaAmiri123/nov-test/pkg/logger"
 )
 
-func NewClientConn(ctx context.Context, logger logger.Logger) (stan.Conn, error) {
+type Config struct {
+	ClusterID    string
+	Url          string
+	ClientID     string
+	PingInterval int
+	PingMaxOut   int
+}
 
-	clusterID := "NATS"       // nats cluster id
-	url := "nats://nats:4222" // nats url
-	clientID := "800"
+func NewClientConn(ctx context.Context, logger logger.Logger, config Config) (stan.Conn, error) {
+
+	//clusterID := "NATS"       // nats cluster id
+	//url := "nats://nats:4222" // nats url
+	//clientID := "800"
 	// you can set client id anything
-	sc, err := stan.Connect(clusterID, clientID, stan.NatsURL(url),
-		stan.Pings(1, 3),
+	sc, err := stan.Connect(config.ClusterID, config.ClientID, stan.NatsURL(config.Url),
+		stan.Pings(config.PingInterval, config.PingMaxOut),
 		stan.SetConnectionLostHandler(func(_ stan.Conn, reason error) {
 			logger.Errorf("Connection lost, reason: %v", reason)
 		}))
 	if err != nil {
-		logger.Errorf("Can't connect: %v.\nMake sure a NATS Streaming Server is running at: %s", err, url)
-		panic(err)
+		logger.Errorf("Can't connect: %v.\nMake sure a NATS Streaming Server is running at: %s", err, config.Url)
+		return nil, err
 	}
 
 	logger.Printf("Connected Nats")

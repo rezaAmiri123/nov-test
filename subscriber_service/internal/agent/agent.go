@@ -42,9 +42,16 @@ type Config struct {
 	TracerEnable      bool   `mapstructure:"TRACER_ENABLE"`
 	TracerLogSpans    bool   `mapstructure:"TRACER_LOG_SPANS"`
 
-	// metrics.Config
-	//MetricServiceName     string `mapstructure:"METRIC_SERVICE_NAME"`
-	//MetricServiceHostPort string `mapstructure:"METRIC_SERVICE_HOST_PORT"`
+	//rabbitmq
+	RabbitMQUser           string `mapstructure:"RABBITMQ_USER"`
+	RabbitMQPassword       string `mapstructure:"RABBITMQ_PASSWORD"`
+	RabbitMQHost           string `mapstructure:"RABBITMQ_HOST"`
+	RabbitMQPort           int    `mapstructure:"RABBITMQ_PORT"`
+	RabbitMQExchange       string `mapstructure:"RABBITMQ_EXCHANGE"`
+	RabbitMQQueue          string `mapstructure:"RABBITMQ_QUEUE"`
+	RabbitMQRoutingKey     string `mapstructure:"RABBITMQ_ROUTING_KEY"`
+	RabbitMQConsumerTag    string `mapstructure:"RABBITMQ_CONSUMER_TAG"`
+	RabbitMQWorkerPoolSize int    `mapstructure:"RABBITMQ_WORKER_POOL_SIZE"`
 }
 
 type Agent struct {
@@ -73,7 +80,8 @@ func NewAgent(config Config) (*Agent, error) {
 		a.setupLogger,
 		//a.setupTracing,
 		a.setupApplication,
-		a.setupNats,
+		//a.setupNats,
+		a.setupRabbitMQ,
 	}
 	for _, fn := range setupsFn {
 		if err := fn(); err != nil {
