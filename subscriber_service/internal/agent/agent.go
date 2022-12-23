@@ -80,7 +80,7 @@ func NewAgent(config Config) (*Agent, error) {
 		a.setupTracing,
 		a.setupMetric,
 		a.setupApplication,
-		//a.setupNats,
+		a.setupNats,
 		a.setupRabbitMQ,
 	}
 	for _, fn := range setupsFn {
