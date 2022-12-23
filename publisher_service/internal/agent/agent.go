@@ -16,17 +16,12 @@ type Config struct {
 	Debug     bool   `mapstructure:"DEBUG"`
 	SecretKey string `mapstructure:"SECRET_KEY"`
 
-	//GRPCUserClientAddr string `mapstructure:"GRPC_USER_CLIENT_ADDR"`
-	//GRPCUserClientPort int    `mapstructure:"GRPC_USER_CLIENT_PORT"`
-	//
-	//GRPCUserClientTLSEnabled       bool   `mapstructure:"GRPC_USER_CLIENT_TLS_ENABLED"`
-	//GRPCUserClientTLSCertFile      string `mapstructure:"GRPC_USER_CLIENT_TLS_CERT_FILE"`
-	//GRPCUserClientTLSKeyFile       string `mapstructure:"GRPC_USER_CLIENT_TLS_KEY_FILE"`
-	//GRPCUserClientTLSCAFile        string `mapstructure:"GRPC_USER_CLIENT_TLS_CA_FILE"`
-	//GRPCUserClientTLSServerAddress string `mapstructure:"GRPC_USER_CLIENT_TLS_SERVER_ADDRESS"`
-	//
-	//GRPCFinanceClientAddr string `mapstructure:"GRPC_FINANCE_CLIENT_ADDR"`
-	//GRPCFinanceClientPort int    `mapstructure:"GRPC_FINANCE_CLIENT_PORT"`
+	// NATS config
+	NatsUrl          string `mapstructure:"NATS_URL"`
+	NatsClusterID    string `mapstructure:"NATS_CLUSTER_ID"`
+	NatsClientID     string `mapstructure:"NATS_CLIENT_ID"`
+	NatsPingInterval int    `mapstructure:"NATS_PING_INTERVAL"`
+	NatsPingMaxOut   int    `mapstructure:"NATS_PING_MAX_OUT"`
 
 	// Http server address
 	HttpServerAddr string `mapstructure:"HTTP_SERVER_ADDR"`

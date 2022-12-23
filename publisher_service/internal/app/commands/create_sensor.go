@@ -24,7 +24,7 @@ func NewCreateSensorHandler(logger logger.Logger, producer messageClient.Produce
 	return &CreateSensorHandler{logger: logger, messageProducer: producer}
 }
 
-func (h CreateSensorHandler) Handle(ctx context.Context, arg []*domain.Sensor) error {
+func (h CreateSensorHandler) Handle(ctx context.Context, arg []domain.Sensor) error {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "CreateSensorHandler.Handle")
 	defer span.Finish()
 
@@ -46,6 +46,6 @@ func (h CreateSensorHandler) Handle(ctx context.Context, arg []*domain.Sensor) e
 	}
 
 	//// TODO we need to change topic name
-	err = h.messageProducer.PublishMessage(ctx, message, messageClient.CreateUserTopic)
+	err = h.messageProducer.PublishMessage(ctx, message, messageClient.CreateSnsorTopic)
 	return err
 }
