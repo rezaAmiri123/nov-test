@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/rezaAmiri123/nov-test/publisher_service/internal/app"
+
 	// "github.com/rezaAmiri123/test-microservice/pkg/auth"
 
 	"github.com/rezaAmiri123/nov-test/pkg/logger"
@@ -83,7 +84,7 @@ func NewAgent(config Config) (*Agent, error) {
 		a.setupLogger,
 		//a.setupMetric,
 		//a.setupRepository,
-		a.setupTracing,
+		// a.setupTracing,
 		a.setupApplication,
 		//a.setupAuthClient,
 		a.setupKeepAlive,

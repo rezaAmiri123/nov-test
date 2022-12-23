@@ -1,32 +1,32 @@
 version: "3.8"
 
 services:
-  publisher:
-    # container_name: service_user
-    build:
-      context: publisher_service/
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    restart: always
-    depends_on:
-      - postgesql
-      - nats
-      - rabbitmq
-    networks: [ "nov" ]
+  # publisher:
+  #   # container_name: service_user
+  #   build:
+  #     context: publisher_service/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   restart: always
+  #   depends_on:
+  #     - postgesql
+  #     - nats
+  #     - rabbitmq
+  #   networks: [ "nov" ]
 
-  subscriber:
-    build:
-      context: subscriber_service/
-      dockerfile: Dockerfile
-    ports:
-      - "6080:6080"
-    restart: always
-    depends_on:
-      - postgesql
-      - nats
-      - rabbitmq
-    networks: [ "nov" ]
+  # subscriber:
+  #   build:
+  #     context: subscriber_service/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "6080:6080"
+  #   restart: always
+  #   depends_on:
+  #     - postgesql
+  #     - nats
+  #     - rabbitmq
+  #   networks: [ "nov" ]
   postgesql:
     image: postgres:12-alpine
     container_name: nov_postgesql
