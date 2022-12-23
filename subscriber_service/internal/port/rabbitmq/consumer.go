@@ -2,6 +2,7 @@ package rabbitmq
 
 import (
 	"context"
+	"github.com/rezaAmiri123/nov-test/subscriber_service/internal/metrics"
 
 	"github.com/pkg/errors"
 	"github.com/rezaAmiri123/nov-test/pkg/logger"
@@ -40,11 +41,17 @@ type MessageConsumer struct {
 	amqpConn *amqp.Connection
 	logger   logger.Logger
 	app      *app.Application
+	metric   *metrics.SubscriberServiceMetric
 }
 
 // NewMessageConsumer Images Consumer constructor
-func NewMessageConsumer(amqpConn *amqp.Connection, logger logger.Logger, app *app.Application) *MessageConsumer {
-	return &MessageConsumer{amqpConn: amqpConn, logger: logger, app: app}
+func NewMessageConsumer(
+	amqpConn *amqp.Connection,
+	logger logger.Logger,
+	app *app.Application,
+	metric *metrics.SubscriberServiceMetric,
+) *MessageConsumer {
+	return &MessageConsumer{amqpConn: amqpConn, logger: logger, app: app, metric: metric}
 }
 
 // CreateChannel Consume messages

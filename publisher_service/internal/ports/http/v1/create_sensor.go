@@ -10,7 +10,7 @@ import (
 
 func (h *HttpServer) CreateSensor() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		//h.metrics.CreateUserHttpRequests.Inc()
+		h.metrics.CreateSensorHttpRequests.Inc()
 
 		span, ctx := opentracing.StartSpanFromContext(c.Request().Context(), "HttpServer.CreateUser")
 		defer span.Finish()
@@ -39,7 +39,7 @@ func (h *HttpServer) CreateSensor() echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
 
-		//h.metrics.SuccessHttpRequests.Inc()
+		h.metrics.SuccessHttpRequests.Inc()
 		return c.JSON(http.StatusOK, nil)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"github.com/rezaAmiri123/nov-test/pkg/logger"
 	"github.com/rezaAmiri123/nov-test/publisher_service/internal/app"
+	"github.com/rezaAmiri123/nov-test/publisher_service/internal/metrics"
 	"github.com/rezaAmiri123/test-microservice/docs"
 	echoSwagger "github.com/swaggo/echo-swagger"
 	"strings"
@@ -39,8 +40,8 @@ const (
 // @securityDefinitions.apikey ApiKeyAuth
 
 type HttpServer struct {
-	app *app.Application
-	//metrics *metrics.ApiServiceMetric
+	app     *app.Application
+	metrics *metrics.PublisherServiceMetric
 	// authClient auth.AuthClient
 	validate *validator.Validate
 	log      logger.Logger
@@ -49,13 +50,13 @@ type HttpServer struct {
 func NewHttpServer(
 	debug bool,
 	application *app.Application,
-//metrics *metrics.ApiServiceMetric,
+	metric *metrics.PublisherServiceMetric,
 	log logger.Logger,
-// authClient auth.AuthClient,
+	// authClient auth.AuthClient,
 ) (*echo.Echo, error) {
 	httpServer := &HttpServer{
-		app: application,
-		//metrics:  metrics,
+		app:      application,
+		metrics:  metric,
 		validate: validator.New(),
 		log:      log,
 		// authClient: authClient,
@@ -114,5 +115,5 @@ func NewHttpServer(
 func (h *HttpServer) traceErr(span opentracing.Span, err error) {
 	span.SetTag("error", true)
 	span.LogKV("error_code", err.Error())
-	//h.metrics.ErrorHttpRequests.Inc()
+	h.metrics.ErrorHttpRequests.Inc()
 }

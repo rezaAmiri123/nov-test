@@ -4,6 +4,7 @@ import (
 	"github.com/rezaAmiri123/nov-test/pkg/logger"
 	"github.com/rezaAmiri123/nov-test/subscriber_service/internal/app"
 	"github.com/rezaAmiri123/nov-test/subscriber_service/internal/domain"
+	"github.com/rezaAmiri123/nov-test/subscriber_service/internal/metrics"
 	"io"
 	"sync"
 )
@@ -26,11 +27,6 @@ type Config struct {
 	PGDBName   string `mapstructure:"POSTGRES_DB_NAME"`
 	PGPassword string `mapstructure:"POSTGRES_PASSWORD"`
 
-	// kafka config
-	KafkaBrokers    []string `mapstructure:"KAFKA_BROKERS"`
-	KafkaGroupID    string   `mapstructure:"KAFKA_GROUP_ID"`
-	KafkaInitTopics bool     `mapstructure:"KAFKA_INIT_TOPICS"`
-
 	// applogger.Config
 	LogLevel   string `mapstructure:"LOG_LEVEL"`
 	LogDevMode bool   `mapstructure:"LOG_DEV_MOD"`
@@ -41,6 +37,10 @@ type Config struct {
 	TracerHostPort    string `mapstructure:"TRACER_HOST_PORT"`
 	TracerEnable      bool   `mapstructure:"TRACER_ENABLE"`
 	TracerLogSpans    bool   `mapstructure:"TRACER_LOG_SPANS"`
+
+	// metrics.Config
+	MetricServiceName     string `mapstructure:"METRIC_SERVICE_NAME"`
+	MetricServiceHostPort string `mapstructure:"METRIC_SERVICE_HOST_PORT"`
 
 	//rabbitmq
 	RabbitMQUser           string `mapstructure:"RABBITMQ_USER"`
@@ -58,9 +58,8 @@ type Agent struct {
 	Config
 
 	logger logger.Logger
-	//metric *metrics.MessageServiceMetric
-	// httpServer  *http.Server
-	// grpcServer  *grpc.Server
+	metric *metrics.SubscriberServiceMetric
+
 	repository  domain.Repository
 	Application *app.Application
 	// AuthClient  auth.AuthClient
@@ -78,7 +77,8 @@ func NewAgent(config Config) (*Agent, error) {
 	}
 	setupsFn := []func() error{
 		a.setupLogger,
-		//a.setupTracing,
+		a.setupTracing,
+		a.setupMetric,
 		a.setupApplication,
 		//a.setupNats,
 		a.setupRabbitMQ,

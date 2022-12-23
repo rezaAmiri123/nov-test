@@ -22,7 +22,7 @@ func (a *Agent) setupRabbitMQ() error {
 	if err != nil {
 		return err
 	}
-	consumer := messagerabbitmq.NewMessageConsumer(conn, a.logger, a.Application)
+	consumer := messagerabbitmq.NewMessageConsumer(conn, a.logger, a.Application, a.metric)
 	worker := consumer.CreateSensorWorker()
 	err = consumer.StartConsumer(
 		context.Background(),

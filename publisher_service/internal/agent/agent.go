@@ -2,6 +2,7 @@ package agent
 
 import (
 	"context"
+	"github.com/rezaAmiri123/nov-test/publisher_service/internal/metrics"
 	"io"
 	"sync"
 
@@ -42,6 +43,10 @@ type Config struct {
 	TracerEnable      bool   `mapstructure:"TRACER_ENABLE"`
 	TracerLogSpans    bool   `mapstructure:"TRACER_LOG_SPANS"`
 
+	// metrics.Config
+	MetricServiceName     string `mapstructure:"METRIC_SERVICE_NAME"`
+	MetricServiceHostPort string `mapstructure:"METRIC_SERVICE_HOST_PORT"`
+
 	//rabbitmq
 	RabbitMQUser           string `mapstructure:"RABBITMQ_USER"`
 	RabbitMQPassword       string `mapstructure:"RABBITMQ_PASSWORD"`
@@ -68,7 +73,7 @@ type Agent struct {
 	Application *app.Application
 	//Maker       token.Maker
 	// AuthClient  auth.AuthClient
-
+	metric       *metrics.PublisherServiceMetric
 	shutdown     bool
 	shutdowns    chan struct{}
 	shutdownLock sync.Mutex
@@ -82,9 +87,9 @@ func NewAgent(config Config) (*Agent, error) {
 	}
 	setupsFn := []func() error{
 		a.setupLogger,
-		//a.setupMetric,
+		a.setupMetric,
 		//a.setupRepository,
-		// a.setupTracing,
+		a.setupTracing,
 		a.setupApplication,
 		//a.setupAuthClient,
 		a.setupKeepAlive,
