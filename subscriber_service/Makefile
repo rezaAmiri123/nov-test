@@ -29,3 +29,5 @@ migratedown1:
 migrateforce:
 	migrate  -path $(MIGRATION_PATH) -database "$(DB_URL)" force 1
 
+test_coverage:
+	go test --cover ./...

@@ -9,12 +9,14 @@ import (
 )
 
 type Config struct {
-	// ServerTLSConfig *tls.Config
-	// token
 	SecretKey string `mapstructure:"SECRET_KEY"`
 
-	// GRPCServerAddr string `mapstructure:"GRPC_SERVER_ADDR"`
-	// GRPCServerPort int    `mapstructure:"GRPC_SERVER_PORT"`
+	// NATS config
+	NatsUrl          string `mapstructure:"NATS_URL"`
+	NatsClusterID    string `mapstructure:"NATS_CLUSTER_ID"`
+	NatsClientID     string `mapstructure:"NATS_CLIENT_ID"`
+	NatsPingInterval int    `mapstructure:"NATS_PING_INTERVAL"`
+	NatsPingMaxOut   int    `mapstructure:"NATS_PING_MAX_OUT"`
 
 	// postgres.Config
 	PGDriver   string `mapstructure:"POSTGRES_DRIVER"`
@@ -69,17 +71,9 @@ func NewAgent(config Config) (*Agent, error) {
 	}
 	setupsFn := []func() error{
 		a.setupLogger,
-		//a.setupMetric,
-
-		//a.setupRepository,
-		a.setupTracing,
+		//a.setupTracing,
 		a.setupApplication,
 		a.setupNats,
-		//a.setupAuthClient,
-		//a.setupHttpServer,
-		// a.setupGrpcServer,
-		//a.setupGRPCServer,
-		//a.setupTracer,
 	}
 	for _, fn := range setupsFn {
 		if err := fn(); err != nil {

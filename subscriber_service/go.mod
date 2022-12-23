@@ -15,11 +15,13 @@ require (
 	github.com/rezaAmiri123/nov-test/pkg v0.0.0-00010101000000-000000000000
 	github.com/rezaAmiri123/nov-test/publisher_service v0.0.0-20221222084548-69ec73b7dade
 	github.com/spf13/viper v1.13.0
+	github.com/stretchr/testify v1.8.0
 	google.golang.org/protobuf v1.28.1
 )
 
 require (
 	github.com/armon/go-metrics v0.4.1 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -34,6 +36,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/segmentio/kafka-go v0.4.35 // indirect
 	github.com/spf13/afero v1.9.2 // indirect

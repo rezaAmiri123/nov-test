@@ -14,22 +14,35 @@ func (r *PGSensorRepository) CreateSensor(ctx context.Context, arg []*domain.Sen
 	span, ctx := opentracing.StartSpanFromContext(ctx, "PGSensorRepository.CreateAverage")
 	defer span.Finish()
 
-	var sensors []Sensor
 	for _, val := range arg {
-		sensors = append(sensors, Sensor{
-			AverageID: average.AverageID,
-			Name:      val.Name,
-			Value:     val.Value,
-			Timestamp: val.Timestamp,
-		})
+		if err := r.DB.QueryRowxContext(
+			ctx,
+			createSensor,
+			&average.AverageID,
+			&val.Name,
+			&val.Timestamp,
+			&val.Value,
+		).Err(); err != nil {
+			return err
+		}
 	}
-	_, err := r.DB.NamedExecContext(ctx, createSensor, sensors)
-	return err
+
+	//var sensors []Sensor
+	//for _, val := range arg {
+	//	sensors = append(sensors, Sensor{
+	//		AverageID: average.AverageID,
+	//		Name:      val.Name,
+	//		Value:     val.Value,
+	//		Timestamp: val.Timestamp,
+	//	})
+	//}
+	//_, err := r.DB.NamedExecContext(ctx, createSensor, sensors)
+	return nil
 }
 
 type Sensor struct {
 	AverageID uuid.UUID `json:"average_id" db:"average_id"`
-	Name      string    `json:"name" db:"name" validate:"required,min=6,max=30"`
+	Name      string    `json:"name" db:"name" `
 	Timestamp time.Time `json:"timestamp" db:"timestamp"`
-	Value     float64   `json:"value" db:"value" validate:"required,min=8,max=15"`
+	Value     float64   `json:"value" db:"value"`
 }

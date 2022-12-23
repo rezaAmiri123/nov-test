@@ -11,20 +11,17 @@ type messageProcessor struct {
 	App *app.Application
 	Sc  stan.Conn
 }
-type Worker func(msg *stan.Msg)
 
 func NewMessageProcessor(log logger.Logger, app *app.Application, sc stan.Conn) *messageProcessor {
 	return &messageProcessor{Log: log, App: app, Sc: sc}
 }
 
-func (mp *messageProcessor) ProcessMessage(subject, qgroup, durable string) stan.Subscription {
-	sub, err := mp.Sc.QueueSubscribe(subject,
-		qgroup, mp.CreateSensor(),
+func (mp *messageProcessor) ProcessMessage(subject, qgroup, durable string) (stan.Subscription, error) {
+	return mp.Sc.QueueSubscribe(
+		subject,
+		qgroup,
+		mp.CreateSensor(),
 		stan.DeliverAllAvailable(),
 		stan.SetManualAckMode(),
 		stan.DurableName(durable))
-	if err != nil {
-		mp.Log.Printf(err.Error())
-	}
-	return sub
 }
